@@ -79,3 +79,4 @@ def plot(words, title):
     plt.tight_layout()
 
     plt.show()
+    plt.savefig(title)
