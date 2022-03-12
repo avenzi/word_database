@@ -1,7 +1,15 @@
 import os
+import argparse
 
-search = ["eBook"]
-for subdir, dirs, files in os.walk("scowl-2020.12.07/final"):
+parser = argparse.ArgumentParser()
+parser.add_argument("words", nargs='+', help="word to search")
+args = parser.parse_args()
+search = args.words
+
+parent = os.path.dirname(__file__)
+DIR = os.path.join(parent, "./scowl-2020.12.07/final")
+
+for subdir, dirs, files in os.walk(DIR):
     for file in files:
         filepath = subdir + os.sep + file
         with open(filepath, encoding="latin-1") as file:
