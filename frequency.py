@@ -4,26 +4,12 @@ import argparse
 import json
 
 if __name__ == "__main__":
-    from scowl import get_words, filter, LEVELS
+    from scowl import Words
 else:
-    from .scowl import get_words, filter, LEVELS
+    from .scowl import Words
 
 ALLOWED_LETTERS = set('abcdefghijklmnopqrstuvwxyz')
 OUTPUT_JSON = "freqs.json"
-
-
-def total_frequency(words):
-    """ Get the total frequencies of letters in a word list """
-    if len(words) == 0:
-        raise Exception("No words given")
-
-    freq = {}
-    for word in words:
-        for i in range(len(word)):
-            letter = word[i]
-            freq[letter] = freq.get(letter, 0) + 1
-
-    return freq
 
 
 def frequency_plot(words, title):
@@ -126,28 +112,3 @@ def positional_frequency_plot(words, title):
 
     plt.show()
     plt.savefig(title)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("level", nargs='?', help="Choose words from this SCOWL level or lower")
-    args = parser.parse_args()
-
-    if args.level:
-        words = get_words(int(args.level))
-    else:
-        words = get_words()
-    words = filter(words)
-    print("Words pulled:", len(words))
-
-    # output total letter frequency list to JSON
-    freqs = total_frequency(words)
-    maximum = max(freqs.values())
-    freqs = {let: freq/maximum for let, freq in freqs.items()}
-    with open('freqs.json', 'w') as file:
-        json.dump(freqs, file)
-
-    # plot it too
-    frequency_plot(words, "Word Letter Frequency")
-
-
